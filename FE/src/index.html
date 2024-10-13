@@ -51,11 +51,11 @@ missionElement.textContent = randomImage.mission;
 
         };
 
-        // lấy vị trí click 
+        // lấy vị trí click
         imgElement.addEventListener('click', (event) => {
             const rect = imgElement.getBoundingClientRect();
-            const clickX = event.clientX - rect.left; // Vị trí x trong ảnh
-            const clickY = event.clientY - rect.top;  // Vị trí y trong ảnh
+            const clickX = event.clientX - rect.left; // Vị trí x 
+            const clickY = event.clientY - rect.top;  // Vị trí y 
 
             // khoảng cách từ điểm clikc đến điểm ponit đã cung cấp
             const distance = Math.sqrt(
