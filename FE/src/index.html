@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tìm đồ vật</title>
+    <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<h1>Game tìm đồ vật</h1>
+        <p id="message"> </p>
+    <div id="game-container">
+        
+        <img id="random-image" src="" alt="Hidden Object" />
+    </div>
+<p id="mission-message"></p>
+
+    <script>
+        //  mặc định ảnh 1920x1080
+        const defaultImageWidth = 1920;
+        const defaultImageHeight = 1080;
+        const distance = 80; // bán kính 80px -> tức point sẽ là 1 hình tròn bán kính 80px, tâm là vị trí x:y
+
+        // ảnh và point cần tìm (x, y là tâm và bán kính là desteance)
+        const images = [
+            { src: 'https://thegioicongnghe.store/wp-content/uploads/2024/10/1.jpg', point: { x: 1, y: 1, radius: 1 * distance }, mission: 'Tìm chiếc chìa khóa' },
+            { src: 'https://thegioicongnghe.store/wp-content/uploads/2024/10/2.jpg', point: { x: 1, y: 1, radius: 1 * distance }, mission: 'Tìm gì đó 2' },
+            { src: 'https://thegioicongnghe.store/wp-content/uploads/2024/10/3.jpg', point: { x: 1, y: 1, radius: 1 * distance }, mission: 'Tìm gì đó 3' },
+            { src: 'https://thegioicongnghe.store/wp-content/uploads/2024/10/4.jpg', point: { x: 1, y: 1, radius: 1 * distance }, mission: 'Tìm gì đó 4' },
+            { src: 'https://thegioicongnghe.store/wp-content/uploads/2024/10/5.jpg', point: { x: 1, y: 1, radius: 1 * distance }, mission: 'Tìm gì đó 5' },
+            { src: 'https://thegioicongnghe.store/wp-content/uploads/2024/10/6.jpg', point: { x: 1920, y: 1080, radius: 1 * distance }, mission: 'Tìm gì đó 6' },
+        ];
+        
+        
+        // random ảnh 
+        let randomImageIndex = Math.floor(Math.random() * images.length);
+        let randomImage = images[randomImageIndex];
+        const imgElement = document.getElementById('random-image');
+        imgElement.src = randomImage.src;
+        // Hiển thị nhiệm vụ
+const missionElement = document.getElementById('mission-message');
+missionElement.textContent = randomImage.mission;
+
+        // tính toán vị trí
+        imgElement.onload = function() {
+            //  hiển thị ảnh với kích thước 960x540, tức 1 nửa 1920x1080
+            const imgDisplayWidth = imgElement.width;
+            const imgDisplayHeight = imgElement.height;
+
+
+        };
+
+        // lấy vị trí click 
+        imgElement.addEventListener('click', (event) => {
+            const rect = imgElement.getBoundingClientRect();
+            const clickX = event.clientX - rect.left; // Vị trí x trong ảnh
+            const clickY = event.clientY - rect.top;  // Vị trí y trong ảnh
+
+            // khoảng cách từ điểm clikc đến điểm ponit đã cung cấp
+            const distance = Math.sqrt(
+                Math.pow(clickX - randomImage.point.x * (imgElement.width / defaultImageWidth), 2) +
+                Math.pow(clickY - randomImage.point.y * (imgElement.height / defaultImageHeight), 2)
+            );
+
+            const messageElement = document.getElementById('message');
+            
+            //nếu điểm click chọn nằm trong cái hình tròn bán kính distance thì thắng
+            if (distance <= randomImage.point.radius * (imgElement.width / defaultImageWidth)) {
+                messageElement.textContent = 'Bạn đã tìm thấy đồ vật! Bạn thắng!';
+                messageElement.style.color = 'green';
+            } else {
+                messageElement.textContent = 'Sai vị trí! Bạn thua rồi!';
+                messageElement.style.color = 'red';
+            }
+        });
+    </script>
+</body>
+</html>
